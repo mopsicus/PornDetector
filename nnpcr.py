@@ -213,7 +213,7 @@ class Estimator(object):
         logits = tf.matmul(h_fc1_drop, W_fcO) + b_fcO
         y_conv = tf.nn.softmax(logits)
 
-        cross_entropy = loss_ops.softmax_cross_entropy(logits, y_)
+        cross_entropy = tf.losses.softmax_cross_entropy(y_, logits)
 
         train_step = tf.train.AdagradOptimizer(0.01).minimize(cross_entropy)
 
@@ -261,7 +261,7 @@ class NNPCR(object):
         trainX, trainY, testX, testY = loadDataset()
         batcher = Batcher(trainX, trainY, 100)
 
-        self.__sess.run(tf.initialize_all_variables())
+        self.__sess.run(tf.global_variables_initializer())
 
         logging.info('training')
 
